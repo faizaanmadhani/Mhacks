@@ -17,6 +17,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const entryId = "DefaultUser";
+
 const Form = t.form.Form;
 
 const Entrance = t.struct({
@@ -64,10 +66,6 @@ class EntryScreen extends React.Component {
   state = {
     image: null,
   };
-  handleSubmit = () => {
-    const value = this._form.getValue();
-    console.log('value: ', value);
-  }
   
   render() {
     
@@ -105,10 +103,36 @@ class EntryScreen extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
-    }
-  };
+      this.uploadImage(result.uri, EntryId)  
+      .then(() => {
+        Alert.alert("Success");
+      })
+      .catch((error)=>{
+        Alert.alert("Error");
+    });
+  }
 }
-
+  
+  handleSubmit = () => {
+    const value = this._form.getValue();
+    console.log(value);
+    
+    function storeFormSubmission(entryId, value) {
+      firebase.database().ref('entries/' + entryId).set({
+        entry: value
+      });
+    }
+  }
+  
+  uploadImage = async (uri, EntryId) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    
+    var ref = firebase.storage.ref().child("entries/" + EntryId);
+    return ref.put(blob);
+  }
+  
+}
 
 class HomeScreen extends React.Component {
   constructor(props) {
