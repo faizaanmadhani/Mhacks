@@ -1,35 +1,114 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, StyleSheet, View, Button } from 'react-native';
+import { AppRegistry, Text, StyleSheet, View, Button, TextInput, Image } from 'react-native';
 import {Constants} from 'expo';
 import {createStackNavigator} from 'react-navigation';
-import firebaseConfig from '../constants/firebase';
 import * as firebase from 'firebase';
+
+import { ImagePicker } from 'expo';
+
+import t from 'tcomb-form-native';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC3W2Cte0o_TpeigvyXStXQ3esYwyD8ceo",
+  authDomain: "Mhacks.firebaseapp.com",
+  databaseURL: "https://mhacks-3254e.firebaseio.com/",
+  storageBucket: "mhacks-3254e.appspot.com",
+};
 
 firebase.initializeApp(firebaseConfig);
 
-class TextInput extends React.Component {
+const Form = t.form.Form;
+
+const Entrance = t.struct({
+  location: t.String,
+  description: t.String,
+});
+
+const formStyles = {
+  ...Form.stylesheet,
+  formGroup: {
+    normal: {
+      marginBottom: 10
+    },
+  },
+  controlLabel: {
+    normal: {
+      color: 'blue',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600'
+    },
+    // the style applied when a validation error occours
+    error: {
+      color: 'red',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600'
+    }
+  }
+}
+
+const options = {
+  fields: {
+    location: {
+      error: 'Enter where you went'
+    },
+    description: {
+      error: 'Enter some information about it',
+    },
+  },
+  stylesheet: formStyles,
+};
+
+class EntryScreen extends React.Component {
+  state = {
+    image: null,
+  };
+  handleSubmit = () => {
+    const value = this._form.getValue();
+    console.log('value: ', value);
+  }
+  
   render() {
+    
+    let { image } = this.state;
+    
     return (
-      <TextInput
-        {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-        editable = {true}
-        maxLength = {40}
-      />
+      <View style={styles.container}>
+        
+        <Form 
+          ref={c => this._form = c}
+          type={Entrance} 
+          options={options}
+        />
+        <Button
+          title="Pick an image from camera roll"
+          onPress={this._pickImage}
+        />
+        {image &&
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        <Button
+          title="Submit"
+          onPress={this.handleSubmit}
+        />
+      </View>
     );
   }
   
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
 }
 
-class EntryScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.titleText}>Entry</Text>
-        
-      </View>
-    )
-  }
-}
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -73,17 +152,10 @@ const RootStack = createStackNavigator(
 );
 
 export default class App extends React.Component {
-    constructor(props) {
-      super(props);
-      this.tasksRef = this.props.firebaseApp.database().ref();
-      this.state = {
-        user:null,
-        loading: true,
-        newTask: ""
+  render() {
+    return <RootStack />;
     }
-    return (<RootStack />);
-    }
-}
+  }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
