@@ -41,6 +41,7 @@ LinksStack.navigationOptions = {
 
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
+  Home: {screen: HomeScreen}
 });
 
 SettingsStack.navigationOptions = {
