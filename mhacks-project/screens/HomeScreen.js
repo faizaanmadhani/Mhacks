@@ -2,15 +2,29 @@ import React, { Component } from 'react';
 import { AppRegistry, Text, StyleSheet, View, Button } from 'react-native';
 import {Constants} from 'expo';
 import {createStackNavigator} from 'react-navigation';
+import firebaseConfig from '../constants/firebase';
+import * as firebase from 'firebase';
+
+firebase.initializeApp(firebaseConfig);
+
+class TextInput extends React.Component {
+  render() {
+    return (
+      <TextInput
+        {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
+        editable = {true}
+        maxLength = {40}
+      />
+    );
+  }
+  
+}
 
 class EntryScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style ={styles.baseText}>
         <Text style={styles.titleText}>Entry</Text>
-        
-        </Text>
         
       </View>
     )
@@ -59,11 +73,17 @@ const RootStack = createStackNavigator(
 );
 
 export default class App extends React.Component {
-  render() {
-    return <RootStack />;
-  }
+    constructor(props) {
+      super(props);
+      this.tasksRef = this.props.firebaseApp.database().ref();
+      this.state = {
+        user:null,
+        loading: true,
+        newTask: ""
+    }
+    return (<RootStack />);
+    }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
