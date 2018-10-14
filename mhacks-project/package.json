@@ -12,8 +12,12 @@
 		"@expo/samples": "2.1.1",
 		"expo": "^30.0.1",
 		"firebase": "^5.5.4",
+		"material-ui-search-bar": "^0.4.2",
 		"react": "16.3.1",
 		"react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+		"react-native-material-design-searchbar": "^1.8.0",
+		"react-native-sideswipe": "^1.4.2",
+		"react-native-ticker": "^2.1.1",
 		"react-navigation": "^2.16.0",
 		"tcomb-form-native": "^0.6.20"
 	},
