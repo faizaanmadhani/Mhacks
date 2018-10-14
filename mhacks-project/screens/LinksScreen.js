@@ -16,13 +16,6 @@ import { Planet, BottomBar } from '../compo';
 
 const { width } = Dimensions.get('window');
 
-const planets = [
-  { title: 'Burj Khalifa', value: 'khalifa', abbr: 'BKH' },
-  { title: 'Mall of the Emirates', value: 'emirates', abbr: 'OSK' },
-  { title: 'Palm Islands', value: 'islands', abbr: 'ISL' },
-  { title: 'Bastakia', value: 'bastakia', abbr: 'BAS' },
-];
-
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
     title: 'Links',
@@ -58,7 +51,6 @@ export default class LinksScreen extends React.Component {
             source={require('../assets/space-bg.jpg')}
           />
           <SideSwipe
-            data={planets}
             shouldCapture={() => true}
             style={[styles.fill, { width }]}
             contentContainerStyle={{  paddingTop: 100 }}
@@ -80,7 +72,6 @@ export default class LinksScreen extends React.Component {
           <Text style={[styles.title, styles.titlePlatformSpecific]}>
             SPACED
           </Text>
-          <BottomBar destination={planets[this.state.currentIndex].abbr} />
         </View>;
   };
 }
