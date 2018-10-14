@@ -15,6 +15,7 @@
 		"material-ui-search-bar": "^0.4.2",
 		"react": "16.3.1",
 		"react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+		"react-native-elements": "^0.19.1",
 		"react-native-material-design-searchbar": "^1.8.0",
 		"react-native-sideswipe": "^1.4.2",
 		"react-native-ticker": "^2.1.1",
